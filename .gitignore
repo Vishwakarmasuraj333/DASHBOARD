@@ -1,0 +1,13 @@
+node_modules
+.next
+.env
+.env.local
+.vercel
+dist
+build
+coverage
+*.log
+
+frontend/node_modules
+frontend/.next
+backend/node_modules
