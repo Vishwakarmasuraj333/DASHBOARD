@@ -5,6 +5,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FaUser, FaEnvelope, FaLock } from "react-icons/fa";
 
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL || "https://dashboard-uobp.vercel.app";
+
 export default function RegisterPage() {
   const router = useRouter();
 
@@ -32,7 +35,7 @@ export default function RegisterPage() {
     setMessage("");
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/register", {
+      const res = await fetch(`${API_URL}/api/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -53,10 +56,10 @@ export default function RegisterPage() {
 
       setTimeout(() => {
         router.push("/login");
-      }, 2000);
+      }, 1500);
     } catch (error) {
       setMessageType("error");
-      setMessage("Unable to connect to server");
+      setMessage("Unable to connect to server. Please check backend URL.");
     } finally {
       setLoading(false);
     }
@@ -64,12 +67,10 @@ export default function RegisterPage() {
 
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-[#050816] via-[#0f172a] to-[#020617] px-4">
-      {/* Background Glow */}
       <div className="absolute left-[-150px] top-[-150px] h-[350px] w-[350px] rounded-full bg-cyan-500/20 blur-[120px]" />
       <div className="absolute bottom-[-150px] right-[-150px] h-[350px] w-[350px] rounded-full bg-blue-500/20 blur-[120px]" />
 
       <div className="relative w-full max-w-md rounded-3xl border border-cyan-500/20 bg-white/10 p-8 shadow-[0_20px_60px_rgba(0,0,0,0.5)] backdrop-blur-xl">
-        {/* Logo */}
         <div className="mb-6 text-center">
           <h1 className="text-4xl font-black text-white">
             Suraj<span className="text-cyan-400">Tech</span>
@@ -80,7 +81,6 @@ export default function RegisterPage() {
           </p>
         </div>
 
-        {/* Message */}
         {message && (
           <div
             className={`mb-5 rounded-xl border px-4 py-3 text-sm font-medium ${
@@ -93,7 +93,6 @@ export default function RegisterPage() {
           </div>
         )}
 
-        {/* Form */}
         <form onSubmit={handleRegister} className="space-y-5">
           <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/10 px-4 py-3 transition focus-within:border-cyan-400">
             <FaUser className="text-cyan-400" />
@@ -102,6 +101,7 @@ export default function RegisterPage() {
               type="text"
               name="name"
               placeholder="Full Name"
+              value={form.name}
               onChange={handleChange}
               required
               className="w-full bg-transparent text-white outline-none placeholder:text-gray-400"
@@ -115,6 +115,7 @@ export default function RegisterPage() {
               type="email"
               name="email"
               placeholder="Email Address"
+              value={form.email}
               onChange={handleChange}
               required
               className="w-full bg-transparent text-white outline-none placeholder:text-gray-400"
@@ -128,6 +129,7 @@ export default function RegisterPage() {
               type="password"
               name="password"
               placeholder="Password"
+              value={form.password}
               onChange={handleChange}
               required
               className="w-full bg-transparent text-white outline-none placeholder:text-gray-400"
@@ -149,7 +151,6 @@ export default function RegisterPage() {
           </button>
         </form>
 
-        {/* Footer */}
         <p className="mt-6 text-center text-sm text-gray-400">
           Already have an account?{" "}
           <Link
